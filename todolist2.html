@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        form {
+            width: 500px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0 auto;
+        }
+
+        .li {
+            width: 400px;
+            height: 26px;
+            position: relative;
+            border: 1px solid black;
+            text-align: left;
+        }
+
+        .replace {
+            position: absolute;
+            right: 25px;
+            background-color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 2px;
+        }
+
+        .delete1 {
+            position: absolute;
+            right: 0;
+            color: red;
+            background-color: white;
+            border: none;
+            cursor: pointer;
+            margin: 2px 1px;
+        }
+
+        .toggle {
+            border: 1.5px solid green;
+        }
+
+        .liInput {
+            border: none;
+            background-color: white;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <form>
+        <h1>To Do List</h1>
+        <input type="text" id="text">
+        <button id="btn">+</button>
+        <ul id="list"></ul>
+    </form>
+
+    <script>
+        const text = document.querySelector('#text'); //인풋텍스트
+        const btn = document.querySelector('#btn'); //+버튼
+        const list = document.querySelector('#list');//리스트목록칸
+
+
+        btn.addEventListener('click', function (e) { //+버튼 클릭
+            e.preventDefault();
+            if (text.value === '') { //아무것도 입력안할시
+                alert('입력하세요'); //알림창
+            } else {
+                var todolist = document.createElement('li'); //li 태그만들기
+                var liInput = document.createElement('input'); // input 만들기
+                liInput.setAttribute('type', 'text'); // input type= text
+                liInput.value = text.value;//li 태그 안 텍스트
+                todolist.appendChild(liInput);
+                liInput.disabled = true;
+                liInput.classList.add('liInput');
+                var replace = document.createElement('button'); //변경버튼태그만들기
+                replace.innerText = "변경" //태그안 텍스트
+                todolist.appendChild(replace);//li태그안에 변경태그 붙이기
+                var delete1 = document.createElement('button'); //삭제버튼태그만들기
+                delete1.innerText = "x" //태그안 텍스트
+                todolist.appendChild(delete1);//li태그안에 삭제태그 붙이기
+                list.appendChild(todolist); //li태그를 ul태그안에 붙이기
+                text.value = ""; //입력버튼 클릭 후 텍스트 안에 비우기
+                todolist.classList.add('li');//bo라는 클래스를 넣어줌(css값 넣기)
+                replace.classList.add('replace');
+                delete1.classList.add('delete1');
+            };
+
+
+            replace.addEventListener('click', function (e) { //변경버튼 클릭
+                e.preventDefault();
+                this.classList.toggle('toggle')
+                if (this.classList.contains('toggle') === true) {
+                    liInput.disabled = false;
+                } else {
+                    liInput.disabled = true;
+                }
+
+                console.log(replace.classList)
+            });
+
+            delete1.addEventListener('click', function (e) { //삭제버튼 클릭시 해당 li제거
+                e.preventDefault();
+                list.removeChild(todolist);
+            })
+
+        });
+
+
+    </script>
+</body>
+
+</html>

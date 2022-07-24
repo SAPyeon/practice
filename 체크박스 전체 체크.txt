@@ -1,0 +1,41 @@
+<input type='checkbox'
+       name='animal' 
+	id="all"
+       value='selectall'
+       onclick='selectAll(this)'/> <b>Select All</b>
+<br />
+<input type='checkbox'
+       name='animal'
+	class="animal" 
+       value='dog'/> 개
+<br />
+<input type='checkbox' 
+       name='animal' 
+	class="animal"
+       value='cat' /> 고양이
+<br />
+<input type='checkbox' 
+       name='animal' 
+	class="animal"
+       value='rabbit' /> 토끼
+
+
+function selectAll(selectAll)  {
+  const checkboxes 
+     = document.querySelectorAll('input[name="animal"]');
+  
+  checkboxes.forEach((checkbox) => {
+    checkbox.checked = selectAll.checked
+  })
+}
+const animal =document.querySelectorAll(".animal");
+
+const allCheck = document.querySelector("#all");
+
+animal.forEach((z)=>{
+	z.onchange = () => {
+		if(z.checked === false){
+			allCheck.checked = false;			
+		}
+	}
+})
