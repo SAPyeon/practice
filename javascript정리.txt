@@ -1210,8 +1210,114 @@ SetTimeout()함수를 사용하면 실행을 지연시킬 수도 있음
 혹은 아직 데이터베이스 작업하는 중이라 함수를 나중에 호출하고 싶을 때 함수를 중첩되게 써야 할 때가 있다.
 이 수많은 중첩된 함수를 자바스크립트의 콜백지옥이라고 부른다.
 
+콜백 실행 후 다음을 실행하기 위해 안에 또다시 콜백을 줌
+
+콜백지옥을 해결하는 방법 : Promise사용
+IE에는 적용불가
+맨처음은 pending 성공은 resolved, 실패는 rejected
+const fakeRequestPromise = (url) =>{
+	return new Promise((resolve,reject) => {
+		const delay = Math.floor(Math.random()*(4500))+500;
+		setTimeout(() =>{
+			if(delay>4000){
+				reject('Connection Timeout : (')
+			}else {
+				resolve(`Here is your fake data from ${url}`)
+			}
+		},delay)
+	})
+}
+
+fakeRequestPromise('yelp.com/page1');
+.then(()=>{
+	console.log("IT WORKED!!!!")
+})
+.catch(()=>{
+	console.log("OH NO, ERROR!!!!")
+})
+
+promise에는 then을 사용하여 성공시 작동할 부분을 입력
+이후 성공하면(resolved) IT WORKED!!!!를 출력하는 함수를 실행, 실패시 error메시지 함수를 실행(rejceted)
+
+콜백처럼 중첩하여 사용
+fakeRequestPromise('yelp.com/page1'); // url로딩 초에 따라 메세지 출력 
+.then(()=>{
+	console.log("IT WORKED!!!!(page1)")
+	fakeRequestPromise('yelp.com/page2');
+		.then(()=>{
+			console.log("IT WORKED!!!!(page2)")
+		})
+		.catch(()=>{
+			console.log("OH NO, ERROR!!!!(page2)")
+		})
+})
+.catch(()=>{
+	console.log("OH NO, ERROR!!!!(page1)")
+})
 
 
+첫번째 page1dl resolve가 되면 다시 또 page2부분으로 넘어감
+
+중첩을 깔끔하게 정리되어 나열할 수 있음  : .then을 사용
+
+fakeRequestPromise('yelp.com/page1');
+	.then(()=>{
+		console.log("IT WORKED!!!!(page1)")
+		return fakeRequestPromise('yelp.com/page2');
+	.then(()=>{
+		console.log("IT WORKED!!!!(page2)")
+		return fakeRequestPromise('yelp.com/page3');
+		})
+	.then(()=>{
+		console.log("OH NO, ERROR!!!!(page3)")
+		})
+	})
+	.catch(()=>{
+		console.log("OH NO, A REQUEST FAILED!!!")
+	})
+
+위와 같지만 catch는 한번만 사용할 수 있어서 간단명료함
+
+promise작성법
+예시
+
+const fakeRequest = (url) =>{
+	return new Promise ((resolve,reject)=>{
+		const rand = Math.random();
+		setTimeout(()=>{
+			if(rand<0.7){
+				resolve('YOUR FAKE DATA HERE');
+			}
+			reject('Request Error!');
+		},1000)
+	})
+}
+
+fakeRequest('/dogs/1')
+	.then(()=>{
+		console.log("DONE WITH REQUEST!")
+		console.log('data is:',data)
+	})
+	.catch((err)=>{
+		console.log("OH NO!",err)
+	})
+	
+const delayedColorChange = (color,delay)=>{
+	return new Promise ((resolve, reject)=>{
+		setTimeout(()=>{
+			document.body.style.backgroundColor = color;
+			resolve();
+		},delay)
+	})
+}
+
+delayedColorChange('red', 1000)
+	.then(()=>{return delayedColorChange('orange',1000)})
+	.then(()=>{return delayedColorChange('yellow',1000)})
+	.then(()=>{return delayedColorChange('green',1000)})
+	.then(()=>{return delayedColorChange('blue',1000)})
+	.then(()=>{return delayedColorChange('indigo',1000)})
+	.then(()=>{return delayedColorChange('violet',1000)})
 
 
 
