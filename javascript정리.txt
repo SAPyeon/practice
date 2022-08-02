@@ -1320,6 +1320,113 @@ delayedColorChange('red', 1000)
 	.then(()=>{return delayedColorChange('violet',1000)})
 
 
+비동기 함수 키워드
+ASYNC FUNCTION  
+async 키워드
+함수 앞에 async를 입력하면 자동으로 Promise를 작동
+const sing = async () =>{
+	throw new Error("UH OH") // 오류값이 있으면 reject값으로 반환
+	return 'LA LA LA LA"
+}
+sing()
+	.then(()=>{
+		console.log("PROMISE RESOLVE WITH :",data)
+	})
+	.catch(err => {
+		console.log("OH NO, PROMISE REJECTED!")
+		console.log(err)
+	})
+
+
+const login = async (username, password) => {
+	if(!username || !password) throw 'Missing Credentials'
+	if(password === 'corgifeetarecute') return 'Welcome!'
+	throw 'invalid password'
+}
+
+login('asdfsfe','corgifeetarecute')
+	.then(msg=>{
+		console.log("LOGED IN!")
+		console.log(msg)
+	})
+	.catch(err=>{
+		console.log("ERROR!")
+		console.log(err)
+	})
+
+
+await 키워드
+비동기 코드를 쓰면서 동기처럼 보이게 함
+비동기 코드를 쓸 때까지 대기하게 만듬
+.then사용 없이 나열할 수 있음
+
+async function rainbow(){
+	await delayedColorChange('red',1000)
+	console.log('HI!') // 위의 함수를 실행한 다음에 hi를 적용
+	await delayedColorChange('orange',1000)
+	await delayedColorChange('green',1000)
+	return "ALL DONE!"		
+}
+
+rainbow().then(()=> console.log("END OF RAINBOW!"));
+
+rainbow 함수가 다 끝난 다음 출력
+.then 대신에 async 로 변경가능 
+
+async function printRainbow(){
+	await rainbow();
+	console.log("END OF RAINBOW!");
+}
+
+promise가 reject가 될 때 처리 방법
+
+const fakeRequest = (url) =>{
+	return new Promise ((resolve,reject)=>{
+		const rand = Math.random();
+		setTimeout(()=>{
+			if(rand<0.7){
+				resolve('YOUR FAKE DATA HERE');
+			}
+			reject('Request Error!');
+		},2000)
+	})
+}
+
+async function makeTwoRequests(){
+	try{
+		let data1 = await fakeRequest('/page1');
+		console.log(data1);
+		let data2 = await fakeRequest('/page2');
+		console.log(data2);
+	}catch(e){
+		console.log("CAUGHT AN ERROR",e)
+		console.log("error is:",e)
+	}
+	
+}
+
+
+AJAX(ASYNCHRONOUS JAVASCRIPT AND XML)
+요청에 따라 서버가 응답할 때 순수한 정보를 가져다가 가공함
+
+API란 Application progrmming interface의 약자
+컴퓨터가 여러 소프트웨어와 상호 작용하거나 소통하는 광범위한 인터페이스이다.
+API를 주로 말할 때 WebAPI를 의미하는데 WebAPI는 HTTP를 기반으로 하는 인터페이스이다.
+
+JSON : 컴퓨터가 이해할 수 있는 데이터 포맷, 데이터나 정보를 요청함
+기존 xml은 정보 자체를 의미하기 때문에 html,css,javascript가 적용되지 않음
+JSON (Java Script Object Notation)
+{
+ "키값" : 밸류 
+}
+로 이루어짐 꼭 ""로 처리
+
+문자열이기 때문에 javascript에서 불러올 수 없음
+단, JSON.parse(data)로 불러올 수 있음
+JSON.Stringfy는 반대로 자바스크립트를 JSON으로 가져감
+
+
+
 
 
 
