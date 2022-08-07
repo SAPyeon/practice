@@ -1425,15 +1425,85 @@ JSON (Java Script Object Notation)
 단, JSON.parse(data)로 불러올 수 있음
 JSON.Stringfy는 반대로 자바스크립트를 JSON으로 가져감
 
+Postman 사용하기
+api를 직접 만들기 전에 실험할 수 있음
+다운로드해서 사용가능, 계정 생성을 하지 않아도 됨
+상태코드도 확인 가능, 404코드는 보낸 코드를 알 수 없다는 것을 의미
+200,201,202 코드가 정상으로 작동할 때 나오는 코드임
+헤더는 키-값을 의미함
+
+엔드포인트
+/search/show?q=:query에서 :뒤에는 변수를 의미
+?q=:query는 쿼리 문자열을 의미 요청할 때 추가 변수를 의미함
+postman은 headers에서 키-값만 입력하여 url을 작성할 수 있음
+accept  - application/JSON을 입력하면 쿼리가 아니라 헤더를 바꿀 수 있음
+
+Fetch API
+fetch('api url')
+	.then(res => {
+		console.log("RESPONSE, WAITING TO PARSE...",res)
+		return res.json() // promise를 반환할 수 있음
+	})
+	.then(data => {
+		console.log("DATA PARSED...",data)
+		console.log(data.ticker.price)
+	})
+	.catch(e=>{
+		console.log("OH NO! ERROR!",e)
+	})
+
+fetch의 단점으로는 헤더 - 바디 순서대로 처리하기 때문에 속도가 느리고 원하는 헤더에 원하는 데이터가 없는 경우 불러올 수 없을 수도 있다.
+.then으로 Promise를 resolve하여 헤어를 먼저 확인하고
+res.json()으로 json을 반환하여 다시 Promise를 실행함
 
 
+fetch + async 사용
+
+const fetchBitcoinPrice = async () => {
+	try{
+		const res = await fetch('http://api.cryptonator.com/api/ticker/btc-usd');
+		const data = await res.json()
+		console.log(data.ticker.price)
+	}catch(e){
+		console.log("somthing went wrong!!!!")
+	}
+}
+
+AXIOS
+javascript와 함께 작동하는 라이브러리, 헤드태그나나 바디태그에 src로 주소를 선언하여 사용
+Node.js와 같은 문법을 사용
+
+axios.get('http://api.cryptonator.com/api/ticker/btc-usd')
+	.then(res => {
+		console.log(res.data.ticker.price);
+	})
+	.catch(err=>{
+		console.log("ERROR!",err)
+	})
 
 
+async사용하면 더 간단하게 할 수 있음
+
+const fetchBitcoinPrice = async ()=>{
+	try{
+		const res = await axios.get('http://api.cryptonator.com/api/ticker/btc-usd')
+		console.log(res.data.ticker.price);
+	}catch(e){
+		console.log("ERROR!",err)
+	}
+}
 
 
+axios은 헤더를 지정할 수 있음
+ex)async함수에서 const config = {headers: {Accept: 'application/json'}; 를 선언
+혹은 여러개를 입력하여 헤더에 json을 지정할 수 있음
+이 후 api가 json으로 응답하도록 설정
 
+ex) 프로그램 검색앱
 
-
+TVMASE API에서 api주소를 가져오기
+URL: /search/shows?q=:query
+Example: https://api.tvmaze.com/search/shows?q=girls
 
 
 
