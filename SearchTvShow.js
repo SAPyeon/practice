@@ -6,7 +6,12 @@ form.addEventListener('submit', async function (e) {
     const config = { params: { q: searchTerm, isFunny: 'pppp' } } // params는 여러 값을 가지고 있는 객체로 헤더나 매개변수 등을 다양하게 입력하여 값을 불러올 수 있음
     const res = await axios.get(`https://api.tvmaze.com/search/shows`, config);
     //console.log(res.data[0].show.image.medium);
-
+    const img = document.querySelectorAll('img');
+    if (img) {
+        for (im of img) {
+            im.remove();
+        }
+    }
     makeImages(res.data);
     form.elements.query.value = '';
 })

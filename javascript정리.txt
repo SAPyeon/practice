@@ -1506,6 +1506,31 @@ URL: /search/shows?q=:query
 Example: https://api.tvmaze.com/search/shows?q=girls
 
 
+프로토타입
+자바스크립의 서로의 객체가 상속받기 위해 사용
+배열도 객체이기 때문에 Array.prototype 을 적용하면 공유하는 객체를 볼 수 있음
+매서드나 특성을 추가하는 실제 객체임
+
+String.prototype.yell = function(){
+	console.log(this.toUpperCase());
+};
+문자열 프로토타입의 객체에 메서드를 추가
+
+"hello".yell();
+//HELLO 콘솔창에 출력됨
+문자열 hello를 참조, toUpperCase 매서드 호출
+
+ex) 
+Array.prototype.pop = function(){
+	return `SORRY I WANT THAT ELEMENT, I WILL NEVER POP IT OFF!`;
+};
+
+[3,4,5].pop();
+//콘솔창에 문구 입력됨
+
+콘솔창에 배열을 선언하고 입력하면 맨 아래에 __proto__ 가 있음
+__proto__ 는 배열이나 문자열의 특성 이름임
+
 
 
 
