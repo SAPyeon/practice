@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>hi</h1>
+    <script>
+        //cat클래스와 dog클래스의 부모클래스 pet
+        class Pet {
+            //생성자함수
+            constructor(name, age) {
+                console.log("IN PET CONSTRUCTOR!");
+                this.name = name;
+                this.age = age;
+            }
+            eat() {
+                return `${this.name} is eating`
+            }
+        }
+        //Cat 클래스
+        class Cat extends Pet {
+            constructor(name, age, livesLeft = 9) {
+                super(name, age); // super 키워드가 super클래스의 참조항목이 됨
+                console.log("IN CAT CONSTRUCTOR!");
+                this.livesLeft = livesLeft;
+            }
+            meow() {
+                return 'MEOWWWWWW';
+            }
+        }
+
+        //호출
+        // const mimy = new Cat('mimy', 4);
+        // console.log(mimy.eat())
+
+        //Dog 클래스
+        class Dog extends Pet {
+            //상속받지 않은 새로운 메서드 생성
+            bark() {
+                return 'WOOFFFFF';
+            }
+            //상속메서드에 오버라이딩
+            eat() {
+                return `${this.name} scarfs his food!`;
+            }
+        }
+        //호출
+        // const kong = new Dog('kong', 12);
+        // console.log(kong.eat());
+    </script>
+</body>
+
+</html>

@@ -1530,9 +1530,85 @@ Array.prototype.pop = function(){
 
 콘솔창에 배열을 선언하고 입력하면 맨 아래에 __proto__ 가 있음
 __proto__ 는 배열이나 문자열의 특성 이름임
+모든 배열은 하나의 프로토타입 배열 객체에서 자신만의 내장된 객체 메서드를 갖는데 여태껏 사용해오던 모든 메서드와 기능이 포함됨
 
 
+팩토링함수
+매개변수를 기반으로 여러 메서드를 추가한 함수가 객체를 만들어 줌
+어떠한 패턴이라 레시피를 기반으로 한 객체를 만드는 하나의 방법임
+ex)rgb값을 hex코드로 변환
+<script>
+        //rgb를 hex코드로 변환하기
+        function hex(r, g, b) {
+            return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+        }
+        function rgb(r, g, b) {
+            return `rgb(${r},${g},${b})`
+        }
 
+        function makeColor(r, g, b) {
+            const color = {};
+            color.r = r;
+            color.g = g;
+            color.b = b;
+            color.rgb = function () {
+                const { r, g, b } = this;
+                return `rgb(${r},${g},${b})`;
+            };
+            color.hex = function () {
+                const { r, g, b } = this;
+                return ('#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1));
+            }
+            return color;
+        }
+        const firstColor = makeColor(35, 255, 150);
+        firstColor.hex();
+    </script>
+firstColor값을 보면 r,g,b를 매개변수로 하고 rgb,hex함수가 포함되어 있음
+각각 복사본이 존재
+하나의 함수로만 참조할 수 없음
+따라서 생성자함수를 사용해야 함
 
+new연산자
+패턴을 기반으로 새로운 객체를 생성해주는 연산자
+
+1.this연산자로 새 객체에 변수를 추가
+function Color(r, g, b) {
+            this.r = r;
+            this.g = g;
+            this.b = b;
+            console.log(this) // this는 윈도우 객체를 참조
+        }
+
+2.new 로 호출 -> 자동으로 this를 반환
+
+new Color(255, 40, 100);
+
+//b:100
+//g:40
+//r:255
+
+즉 new를 사용하면 프로토타입에 함수를 정의할 수 있음
+Color.prototype.rgb = function () {
+            const { r, g, b } = this;
+            return `rgb(${r},${g},${b})`;
+        };
+const color1 = new Color(255, 40, 100);
+
+color1;
+//b: 100
+g: 40
+r: 255
+[[Prototype]]: Object
+rgb: ƒ ()
+constructor: ƒ Color(r, g, b)
+[[Prototype]]: Object
+
+//이후 함수를 메서드처럼 호출가능
+color1.rgb
+//ƒ () {
+            const { r, g, b } = this;
+            return `rgb(${r},${g},${b})`;
+        }
 
 
