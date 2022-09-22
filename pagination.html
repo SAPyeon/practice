@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>pagination</h1>
+    <div id="list"></div>
+    <button id="prev">이전</button>
+    <div id="pagination"></div><button id="next">다음</button>
+</body>
+<script>
+    const list_items = [
+        "Item 1",
+        "Item 2",
+        "Item 3",
+        "Item 4",
+        "Item 5",
+        "Item 6",
+        "Item 7",
+        "Item 8",
+        "Item 9",
+        "Item 10",
+        "Item 11",
+        "Item 12",
+        "Item 13",
+        "Item 14",
+        "Item 15",
+        "Item 16",
+        "Item 17",
+        "Item 18",
+        "Item 19",
+        "Item 20",
+        "Item 21",
+        "Item 22",
+        "Item 23",
+        "Item 24",
+        "Item 25",
+        "Item 26",
+        "Item 27",
+        "Item 28",
+        "Item 29",
+        "Item 30",
+        "Item 31",
+        "Item 32",
+        "Item 33",
+        "Item 34",
+        "Item 35",
+        "Item 36",
+        "Item 37",
+        "Item 38",
+        "Item 39",
+        "Item 40",
+        "Item 41",
+        "Item 42",
+        "Item 43",
+        "Item 44",
+        "Item 45",
+        "Item 46",
+        "Item 47",
+        "Item 48",
+        "Item 49",
+        "Item 50",
+        "Item 51",
+        "Item 52",
+        "Item 53",
+        "Item 54",
+        "Item 55",
+        "Item 56",
+        "Item 57",
+        "Item 58",
+        "Item 59",
+        "Item 60",
+        "Item 61",
+        "Item 62",
+        "Item 63",
+        "Item 64",
+        "Item 65",
+        "Item 66",
+        "Item 67",
+        "Item 68",
+        "Item 69",
+        "Item 70",
+        "Item 71",
+        "Item 72",
+        "Item 73",
+        "Item 74",
+        "Item 75",
+        "Item 76",
+        "Item 77",
+        "Item 78",
+        "Item 79",
+        "Item 80",
+        "Item 81",
+        "Item 82",
+        "Item 83",
+        "Item 84",
+        "Item 85",
+        "Item 86",
+        "Item 87",
+        "Item 88",
+        "Item 89",
+        "Item 90",
+        "Item 91",
+        "Item 92",
+        "Item 93",
+        "Item 94",
+        "Item 95",
+        "Item 96",
+        "Item 97",
+        "Item 98",
+        "Item 99",
+        "Item 100",
+    ];
+    const list_element = document.getElementById('list');
+    const pagination_element = document.getElementById('pagination');
+    const prev = document.getElementById('prev');
+    const next = document.getElementById('next');
+
+    let current_page = 1; //현재페이지
+    let rows = 5; // 페이지에 나타낼 갯수
+
+    function DisplayList(items, wrapper, amount, page) {
+        wrapper.innerHTML = "";
+        page--;
+        let start = amount * page;
+        let end = start + amount;
+
+        let paginatedItems = items.slice(start, end);
+
+        for (let i = 0; i < paginatedItems.length; i++) {
+            let item = paginatedItems[i];
+
+            let item_element = document.createElement('div');
+            item_element.innerText = item;
+
+            wrapper.appendChild(item_element);
+
+        }
+    }
+    let endPage = Math.ceil(current_page / 10) * 10;
+    let = startPage = 1;
+    function SetupPagination(items, wrapper, amount, startPage) {
+        wrapper.innerHTML = "";
+
+        let page_count = Math.ceil(items.length / amount); //100/5 = 20 //페이징에 나타낼 페이지 수
+
+        if (endPage < 10) {
+            startPage = 1;
+        } else {
+            startPage = endPage - 9;
+        }
+
+        for (let i = startPage; i < page_count + 1; i++) {
+            let btn = PaginationButton(i, items);
+            wrapper.appendChild(btn);
+        }
+    }
+    function PaginationButton(page, items) {
+        let button = document.createElement('button');
+        button.innerText = page;
+
+        if (current_page == page) {
+            //button.classList.add('active');
+
+        }
+        button.addEventListener("click", function () {
+            current_page = page;
+            DisplayList(items, list_element, rows, current_page);
+            //let current_btn = document.querySelector('.pagenumbers button.active')
+            //current_btn.classList.remove('active');
+            //button.classList.add('active');
+        })
+        return button;
+    }
+    DisplayList(list_items, list_element, rows, current_page);
+    SetupPagination(list_items, pagination_element, rows, 1);
+    // next.addEventListener("click", function () {
+    //     //startPage = startPage + 10;
+    //     SetupPagination(list_items, pagination_element, rows, 11);
+    // })
+</script>
+
+</html>
