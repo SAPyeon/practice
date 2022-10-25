@@ -215,18 +215,22 @@
     DisplayList(data, list_element, amount, current_page);
     SetupPagination(data, pagination_element, amount, current_page,startPage);
 
-    next.addEventListener("click", function () {
+    next.addEventListener("click", function (e) {
             startPage = startPage+10;
-            if(startPage > total){
+            if(startPage >= total){
                 startPage = startPage -10
+            }else{
+                current_page = startPage;
             }
             console.log(startPage)
-            current_page = startPage;
-            DisplayList(data, list_element, amount, startPage);
-            SetupPagination(data, pagination_element, amount, current_page,startPage);
+            DisplayList(data, list_element, amount, current_page);
+            SetupPagination(data, pagination_element, amount, current_page,startPage);            
     })
-    prev.addEventListener("click",function(){
-        startPage = startPage-10;
+    prev.addEventListener("click",function(e){
+        if(startPage === 1){
+            e.preventDefault();
+        }else{
+            startPage = startPage-10;
        
         if(startPage<1){
             startPage = 1;
@@ -238,6 +242,8 @@
         current_page = endPage;
         console.log(startPage)
         SetupPagination(data, pagination_element, amount, current_page,startPage);
+        }
+        
     })
 </script>
 
