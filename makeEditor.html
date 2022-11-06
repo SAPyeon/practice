@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div#editor {
+            padding: 16px 24px;
+            border: 1px solid #D6D6D6;
+            border-radius: 4px;
+            width: 80%;
+        }
+
+        #img-selector {
+            display: none;
+        }
+
+        #editor img {
+            max-width: 100%;
+        }
+
+        button.active {
+            background-color: rgb(60, 0, 128);
+            color: #FFF;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>게시판 에디터 만들기</h1>
+    <div class="editor-menu">
+        <select id="select-font-size">
+            <option value="">폰트 사이즈</option>
+            <option value="1">11px</option>
+            <option value="2">13px</option>
+            <option value="3">16px</option>
+            <option value="4">19px</option>
+            <option value="5">24px</option>
+            <option value="6">28px</option>
+            <option value="7">30px</option>
+        </select>
+        <button id="btn-bold">
+            <b>B</b>
+        </button>
+        <button id="btn-italic">
+            <i>I</i>
+        </button>
+        <button id="btn-underline">
+            <u>U</u>
+        </button>
+        <button id="btn-strike">
+            <s>S</s>
+        </button>
+        <button id="btn-ordered-list">
+            OL
+        </button>
+        <button id="btn-unordered-list">
+            UL
+        </button>
+        <button id="btn-image">
+            IMG
+        </button>
+    </div>
+    <div id="editor" contenteditable="true"></div>
+    <input id="img-selector" type="file" accept="image/*" />
+    <div><textarea name="" id="content" cols="30" rows="10"></textarea></div>
+    <script>
+        const editor = document.getElementById('editor');
+        const fontSizeSelector = document.getElementById('select-font-size');
+        const btnBold = document.getElementById('btn-bold');
+        const btnItalic = document.getElementById('btn-italic');
+        const btnUnderline = document.getElementById('btn-underline');
+        const btnStrike = document.getElementById('btn-strike');
+        const btnOrderedList = document.getElementById('btn-ordered-list');
+        const btnUnorderedList = document.getElementById('btn-unordered-list');
+        const btnImage = document.getElementById('btn-image');
+        const imageSelector = document.getElementById('img-selector');
+        const content = document.getElementById('content')
+       
+        editor.addEventListener('input',function(){
+            content.value = this.innerHTML
+            console.log(this.value)
+        })
+        
+
+        // 폰트사이즈 select 부분
+        const fontSizeList = [10, 13, 16, 18, 24, 32, 48];
+
+        editor.focus();
+
+
+
+        // 폰트 select시 폰트 변화
+        fontSizeSelector.addEventListener('change', function () {
+            console.log(this.value)
+            changeFontSize(this.value);
+        });
+
+        function changeFontSize(size) {
+            document.execCommand('fontSize', false, size);
+            focusEditor();
+        }
+        
+        // 버튼 클릭시 주어야 할 스타일
+        btnBold.addEventListener('click', function () {
+            setStyle('bold');
+        });
+
+        btnItalic.addEventListener('click', function () {
+            setStyle('italic');
+        });
+
+        btnUnderline.addEventListener('click', function () {
+            setStyle('underline');
+        });
+
+        btnStrike.addEventListener('click', function () {
+            setStyle('strikeThrough')
+        });
+
+        btnOrderedList.addEventListener('click', function () {
+            setStyle('insertOrderedList');
+        });
+
+        btnUnorderedList.addEventListener('click', function () {
+            setStyle('insertUnorderedList');
+        });
+
+        // 버튼 클릭 시 에디터가 포커스를 잃기 때문에 다시 에디터에 포커스를 해줌
+
+        function focusEditor() {
+            editor.focus({ preventScroll: true });
+        }
+
+        // 이미지파일 올리기
+        btnImage.addEventListener('click', function () {
+            imageSelector.click();
+        });
+        imageSelector.addEventListener('change', function (e) {
+            const files = e.target.files;
+            if (!!files) {
+                insertImageDate(files[0]);
+            }
+        });
+
+        function insertImageDate(file) {
+            const reader = new FileReader();
+            reader.addEventListener('load', function (e) {
+                focusEditor();
+                document.execCommand('insertImage', false, `${reader.result}`);
+            });
+            reader.readAsDataURL(file);
+        }
+
+
+        // 텍스트에 따라 버튼 스타일 활성화
+        editor.addEventListener('keyup', function () {
+            checkStyle();
+        });
+
+        editor.addEventListener('mousedown', function () {
+            checkStyle();
+        });
+
+        function setStyle(style) {
+            document.execCommand(style);
+            focusEditor();
+            checkStyle();
+        }
+
+
+        function checkStyle() {
+            if (isStyle('bold')) {
+                btnBold.classList.add('active');
+            } else {
+                btnBold.classList.remove('active');
+            }
+            if (isStyle('italic')) {
+                btnItalic.classList.add('active');
+            } else {
+                btnItalic.classList.remove('active');
+            }
+            if (isStyle('underline')) {
+                btnUnderline.classList.add('active');
+            } else {
+                btnUnderline.classList.remove('active');
+            }
+            if (isStyle('strikeThrough')) {
+                btnStrike.classList.add('active');
+            } else {
+                btnStrike.classList.remove('active');
+            }
+            if (isStyle('insertOrderedList')) {
+                btnOrderedList.classList.add('active');
+            } else {
+                btnOrderedList.classList.remove('active');
+            }
+            if (isStyle('insertUnorderedList')) {
+                btnUnorderedList.classList.add('active');
+            } else {
+                btnUnorderedList.classList.remove('active');
+            }
+            reportFont();
+        }
+
+        function isStyle(style) {
+            return document.queryCommandState(style);
+        }
+        // 폰트 정보 가져오는 코드 참고 : https://stackoverflow.com/questions/8770008/contenteditable-get-current-font-color-size
+        function getComputedStyleProperty(el, propName) {
+            if (window.getComputedStyle) {
+                return window.getComputedStyle(el, null)[propName];
+            } else if (el.currentStyle) {
+                return el.currentStyle[propName];
+            }
+        }
+
+        function reportFont() {
+            let containerEl, sel;
+            if (window.getSelection) {
+                sel = window.getSelection();
+                if (sel.rangeCount) {
+                    containerEl = sel.getRangeAt(0).commonAncestorContainer;
+                    if (containerEl.nodeType === 3) {
+                        containerEl = containerEl.parentNode;
+                    }
+                }
+            } else if ((sel = document.selection) && sel.type !== 'Control') {
+                containerEl = sel.createRange().parentElement();
+            }
+
+            if (containerEl) {
+                const fontSize = getComputedStyleProperty(containerEl, 'fontSize');
+                //const fontName = getComputedStyleProperty(containerEl, 'fontFamily');
+                const size = parseInt(fontSize.replace('px', ''));
+
+                fontSizeSelector.value = fontSizeList.indexOf(size) + 1;
+               // console.log(fontSizeList.indexOf(size))
+                // console.log(fontSizeSelector.value)
+                //console.log(size)
+                // fontName이 문자열 "폰트명"으로 오기 때문에 "를 제거해주는 코드 추가
+               // fontNameSelector.value = fontName.replaceAll('"', '')
+            }
+        }
+    </script>
+</body>
+
+</html>
+
+
+

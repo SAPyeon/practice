@@ -6,16 +6,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+    .re{
+        color:red;
+    }
+    
+    </style>
 </head>
 
 <body>
     <h1>pagination</h1>
     <div id="list"></div>
     <button id="prev">이전</button>
-    <div id="pagination"></div><button id="next">다음</button>
+    <div id="pagination"></div>
+    <button id="next">다음</button>
 </body>
 <script>
-    const list_items = [
+    const data = [
         "Item 1",
         "Item 2",
         "Item 3",
@@ -116,6 +123,22 @@
         "Item 98",
         "Item 99",
         "Item 100",
+        "Item 101",
+        "Item 102",
+        "Item 103",
+        "Item 104",
+        "Item 105",
+        "Item 106",
+        "Item 107",
+        "Item 108",
+        "Item 109",
+        "Item 110",
+        "Item 111",
+        "Item 112",
+        "Item 113",
+        "Item 114",
+        "Item 115",
+        "Item 116",
     ];
     const list_element = document.getElementById('list');
     const pagination_element = document.getElementById('pagination');
@@ -123,17 +146,22 @@
     const next = document.getElementById('next');
 
     let current_page = 1; //현재페이지
-    let rows = 5; // 페이지에 나타낼 갯수
-
+    let amount = 5; // 페이지에 나타낼 갯수
+    let startPage = 1;
+    let endPage = startPage + 9;
+    let total = Math.ceil(data.length / amount);
+    console.log(total)
+    //리스트를 보여주는 함수
     function DisplayList(items, wrapper, amount, page) {
         wrapper.innerHTML = "";
-        page--;
-        let start = amount * page;
-        let end = start + amount;
+        page--; // 페이지번호를 1 다운
 
-        let paginatedItems = items.slice(start, end);
+        let start = amount * page; //현재페이지:(2-1)*5 = 5
+        let end = start + amount; // 5+5 = 10
 
-        for (let i = 0; i < paginatedItems.length; i++) {
+        let paginatedItems = items.slice(start, end); //6-10번까지 불러오기
+
+        for (let i = 0; i < paginatedItems.length; i++) { // 5개까지 불러옴
             let item = paginatedItems[i];
 
             let item_element = document.createElement('div');
@@ -143,47 +171,80 @@
 
         }
     }
-    let endPage = Math.ceil(current_page / 10) * 10;
-    let = startPage = 1;
-    function SetupPagination(items, wrapper, amount, startPage) {
+
+    //버튼 안에 숫자를 넣는 함수
+    function SetupPagination(items, wrapper, amount, current_page , startPage) {
         wrapper.innerHTML = "";
 
-        let page_count = Math.ceil(items.length / amount); //100/5 = 20 //페이징에 나타낼 페이지 수
+        let page_count = Math.ceil(items.length / amount); //100/5 = 20
 
-        if (endPage < 10) {
-            startPage = 1;
-        } else {
-            startPage = endPage - 9;
+        let PageGroup = Math.ceil(current_page / 10) * 10; // 1페이지 : 10, 2페이지:10, 11페이지:20 
+        //startPage = 1; // 현재 2페이지 : 2/10+1 = 1 , 11페이지 : 11/10 +1 = 2 
+
+        let endPage = startPage + 9;
+        let RealEnd = page_count; //21
+        
+        if (RealEnd < endPage) {
+            endPage = RealEnd ;
         }
-
-        for (let i = startPage; i < page_count + 1; i++) {
+        for (let i = startPage; i < endPage+1; i++) {
             let btn = PaginationButton(i, items);
             wrapper.appendChild(btn);
         }
+
     }
+    //버튼만들어 페이징 하는 함수
     function PaginationButton(page, items) {
         let button = document.createElement('button');
         button.innerText = page;
-
+        
         if (current_page == page) {
-            //button.classList.add('active');
-
+                button.classList.add('re')
         }
+        
         button.addEventListener("click", function () {
-            current_page = page;
-            DisplayList(items, list_element, rows, current_page);
-            //let current_btn = document.querySelector('.pagenumbers button.active')
-            //current_btn.classList.remove('active');
-            //button.classList.add('active');
+            //button.classList.remove('re')
+            current_page = page;           
+            DisplayList(items, list_element, amount, current_page);
+             let current_btn = document.querySelector('.re')
+             current_btn.classList.remove('re');
+            button.classList.add('re');
         })
         return button;
     }
-    DisplayList(list_items, list_element, rows, current_page);
-    SetupPagination(list_items, pagination_element, rows, 1);
-    // next.addEventListener("click", function () {
-    //     //startPage = startPage + 10;
-    //     SetupPagination(list_items, pagination_element, rows, 11);
-    // })
+    DisplayList(data, list_element, amount, current_page);
+    SetupPagination(data, pagination_element, amount, current_page,startPage);
+
+    next.addEventListener("click", function (e) {
+            startPage = startPage+10;
+            if(startPage >= total){
+                startPage = startPage -10
+            }else{
+                current_page = startPage;
+            }
+            console.log(startPage)
+            DisplayList(data, list_element, amount, current_page);
+            SetupPagination(data, pagination_element, amount, current_page,startPage);            
+    })
+    prev.addEventListener("click",function(e){
+        if(startPage === 1){
+            e.preventDefault();
+        }else{
+            startPage = startPage-10;
+       
+        if(startPage<1){
+            startPage = 1;
+            DisplayList(data, list_element, amount, current_page);
+        }else{
+            endPage= startPage+9
+             DisplayList(data, list_element, amount, endPage);
+        }
+        current_page = endPage;
+        console.log(startPage)
+        SetupPagination(data, pagination_element, amount, current_page,startPage);
+        }
+        
+    })
 </script>
 
 </html>
