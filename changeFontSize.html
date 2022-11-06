@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <textarea name="" id="text" cols="30" rows="10"></textarea>
+    <button id="changeFont">변경</button>
+    <script>
+        // selectionStart: 7, selectionEnd: 10
+        // 드래그한 영역 앞뒤로 `**`을 넣어보자.
+
+        const textarea = document.querySelector("textarea")
+        console.log(textarea)
+        const startPosition = textarea.selectionStart;
+        const endPosition = textarea.selectionEnd;
+        const draggedLength = endPosition - startPosition;
+
+        // textarea.current.value는 현재 textarea에 작성된 텍스트 값이다.
+        textarea.value = '안녕하세요. 이지미입니다.'
+        const beforeText = textarea.value.substring(startPosition, 0); // 또는 ~.substring(0, startPostion), '안녕하세요. '
+        const draggedText = textarea.value.substring(startPosition, endPosition); // '이지미'
+        const afterText = textarea.value.substring(endPosition); // '입니다.'
+
+        // result, '안녕하세요. **이지미**입니다.'
+
+
+        const change = document.querySelector('#changeFont');
+        change.addEventListener('click', function () {
+            console.log("startPosition= " + startPosition);
+            console.log("endPosition= " + endPosition);
+            console.log("draggedLength= " + draggedLength);
+            console.log("beforeText= " + beforeText);
+            console.log("draggedText= " + draggedText);
+            console.log("afterText= " + afterText);
+            textarea.value = beforeText + '**' + draggedText + '**' + afterText;
+        });
+    </script>
+</body>
+
+</html>
