@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,13 +12,32 @@
             border: 1px solid #ccc;
         }
     </style>
+</head>
+<body>
+    <p>abcdefghijklmnopqrstuvwxyz</p>
+    <p>마우스로 드래그해서 선택한 글 나오기</p>
+    <div id="console"></div>
+    <div contenteditable="true" id="content"></div>
+    <select name="fontsizeAdd" id="addSpan">
+        <option value="11px">11px</option>
+        <option value="15px">15px</option>
+        <option value="19px">19px</option>
+        <option value="24px">24px</option>
+        <option value="30px">30px</option>
+    </select>
+    <div><textarea name="texta" id="texta" cols="30" rows="10"></textarea></div>
+    
+    
+    
     <script type="text/javascript">
+        // 드래그 문자열가져오기
         function selectText() {
             var selectionText = "";
             if (document.getSelection) {
                 selectionText = document.getSelection();
             } else if (document.selection) {
                 selectionText = document.selection.createRange().text;
+                
             }
             return selectionText;
         }
@@ -27,23 +45,39 @@
         document.onmouseup = function () {
             document.getElementById("console").innerHTML = selectText();
         }
-    </script>
-</head>
-
-<body>
-    <p>abcdefghijklmnopqrstuvwxyz</p>
-    <p>마우스로 드래그해서 선택한 글 나오기</p>
-    <div id="console"></div>
-    <div contenteditable="true" id="content"></div>
-    <button id="addSpan">더하기</button>
-    <script>
         const content = document.querySelector("#content")
         const addSpan = document.querySelector("#addSpan");
-        addSpan.addEventListener("click", function () {
-            content.innerHTML = `<span>${selectText()}</span>`
-            console.log(content.innerHTML)
+        const texta = document.querySelector("#texta");
+        
+        content.addEventListener("input",function(){
+            texta.value = this.innerHTML;
         })
-    </script>
-</body>
+        const spanList = document.querySelectorAll("span");
 
+        // 셀렉트 옵션 선택시 폰트 사이즈 변경
+        addSpan.addEventListener("change", function (e) {
+            console.log(e.target.value)
+            const newRange = window.getSelection().getRangeAt(0); //해당 드래그 범위 추출
+            
+            window.getSelection().addRange(newRange); //newRange범위에 넣기
+            //<span style="font-size=옵션값"></span> 형태 만들기
+            let tmpNode = document.createElement('span') 
+            tmpNode.style.fontSize = e.target.value;
+            tmpNode.innerText = selectText();
+            console.log(tmpNode)
+            newRange.deleteContents(); // 해당범위 내용삭제
+            newRange.insertNode(tmpNode); // 해당범위에 node입력
+            texta.value = content.innerHTML;// textarea에 입력            
+            
+            const selection = document.getSelection();
+            const range = selection.getRangeAt(0);
+            const start = range.startOffset;
+            const end = range.endOffset;
+            console.log("end = "+end)
+        })
+        content.focus({preventScroll:true})
+        
+    </script>
+
+</body>
 </html>
