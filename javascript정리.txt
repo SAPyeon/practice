@@ -1423,7 +1423,7 @@ JSON (Java Script Object Notation)
 
 문자열이기 때문에 javascript에서 불러올 수 없음
 단, JSON.parse(data)로 불러올 수 있음
-JSON.Stringfy는 반대로 자바스크립트를 JSON으로 가져감
+JSON.Stringify는 반대로 자바스크립트를 JSON으로 가져감
 
 Postman 사용하기
 api를 직접 만들기 전에 실험할 수 있음
@@ -1614,18 +1614,7 @@ color1.rgb
 
 
 
-터미널
-speed, access, tools
-속도가 빠름
-액세스 구너한과 더 큰 능력을 줌
-숨겨진 파일도 확인할 수 있음
-서버를 시작하거나 프로세스를 중단하는 등 특정한 작업을 할 때 숨겨진 파일을 만들어서 수정하고 특정한 설정을 하고 싶을 때 사용
-여러 툴을 termianl을 열어서 실행하고 검사할 수 있음
 
-
-Terminal : 원래는 하드웨어였음, but 지금은 terminal 소프트웨어자체를 의미
-shell : terminal에서 실행되는 소프트 웨어
-bash : Zshell 과 함께 흔히 쓰는 shell
 
 
 
