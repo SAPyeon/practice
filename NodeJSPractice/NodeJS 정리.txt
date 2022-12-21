@@ -1,0 +1,620 @@
+Node.js
+
+Node.js란?
+Javascript 런타임
+Javascript를 실행하려면 별도의 버전은 없지만 일정한 사양(ECMAScript 사양)을 갖춰야 함
+기존 javascript는 사양을 갖추고 갖추고 Chrome, Safari, IE 등의 브라우저에 실행해야 했음
+but Node는 브라우저 밖에서 작동되는 javascript 실행환경으로 브라우저를 열지 않고 실행가능하게 함
+이로 인해 다른 언어들과의 상호작용을 실행할 수 있음
+그러나 Node.js는 dom객체나 이벤트 등을 사용할 수 없다.
+
+
+Node.js 용도
+풀 스택 애플리케이션을 만들기 위한 장치
+프레임워크로는 Express가 있음
+이걸 사용해서 javascript 코드로 앱을 만들 수 있음
+즉, 브라우저와 네이티브 앱에서도 사용 가능
+ex) twitch, VSCode 등도 Node를 사용
+
+Web Servers
+Command Line Tools
+Native Apps(VSCode is a Node app)
+Video Games
+Drone Software
+등등
+
+
+Node.js 설치
+
+https://nodejs.org/en/ 접속
+
+컴퓨터에 맞는 걸 선택해서 다운로드, 접속하면 자동으로 알려줌
+
+왼쪽 LTS 다운(최신버전으로 할 필요는 없음)
+
+원하는 경로로 자유롭게 설치
+
+cmd창에 입력
+
+C:\Users\skeh0>node
+Welcome to Node.js v18.12.1.
+Type ".help" for more information.
+>
+
+결과와 같이 나온다면 node.js 설치 끝
+
+git bash에 node 입력
+skeh0@pyun MINGW64 ~
+$ node
+Welcome to Node.js v18.12.1.
+Type ".help" for more information.
+>
+
+이후 crtl+c를 두번 누르면 node.js 종료
+ex) crtl+c 한번 눌렀을 때
+(To exit, press Ctrl+C again or Ctrl+D or type .exit)
+>
+
+NodeREPL
+REPL : Read Evaluate Print Loop
+브라우저의 javascript 콘솔은 REPL임
+브라우저에서 스크립트를 열고 실행함, 뭔가를 출력하고 반복함
+Chrome에 javascript console과 REPL은 개념이 같음
+
+단, javascript 콘솔에 접근할 수 없는 명령어를 REPL 에서 사용가능
+
+skeh0@pyun MINGW64 ~
+$ node
+Welcome to Node.js v18.12.1.
+Type ".help" for more information.
+> .help
+.break    Sometimes you get stuck, this gets you out
+.clear    Alias for .break
+.editor   Enter editor mode
+.exit     Exit the REPL
+.help     Print this help message
+.load     Load JS from a file into the REPL session
+.save     Save all evaluated commands in this REPL session to a file
+
+Press Ctrl+C to abort current expression, Ctrl+D to exit the REPL
+> .exit
+
+
+브라우저에 있지만 Node에 없는 기능
+1. 문서객체모델(DOM) API가 없음 , 즉 window와 document가 존재하지 않음(명령어에 입력해도 나타나지 않음)
+대신 전역객체인 global 은 사용가능
+> global
+<ref *1> Object [global] {
+  global: [Circular *1],
+  queueMicrotask: [Function: queueMicrotask],
+  clearImmediate: [Function: clearImmediate],
+  setImmediate: [Function: setImmediate] {
+    [Symbol(nodejs.util.promisify.custom)]: [Getter]
+  },
+  structuredClone: [Function: structuredClone],
+  clearInterval: [Function: clearInterval],
+  clearTimeout: [Function: clearTimeout],
+  setInterval: [Function: setInterval],
+  setTimeout: [Function: setTimeout] {
+    [Symbol(nodejs.util.promisify.custom)]: [Getter]
+  },
+  atob: [Function: atob],
+  btoa: [Function: btoa],
+  performance: Performance {
+    nodeTiming: PerformanceNodeTiming {
+      name: 'node',
+      entryType: 'node',
+      startTime: 0,
+      duration: 155549.88789999858,
+      nodeStart: 2.159699998795986,
+      v8Start: 4.932099997997284,
+      bootstrapComplete: 29.84339999780059,
+      environment: 16.349899999797344,
+      loopStart: 44.654599998146296,
+      loopExit: -1,
+      idleTime: 155453.6558
+    },
+    timeOrigin: 1671456185561.247
+  },
+  fetch: [AsyncFunction: fetch]
+}
+
+
+ex) setTimeout
+> setTimeout(()=>console.log("HELLO!!!!!"),3000)
+Timeout {
+  _idleTimeout: 3000,
+  _idlePrev: [TimersList],
+  _idleNext: [TimersList],
+  _idleStart: 252827,
+  _onTimeout: [Function (anonymous)],
+  _timerArgs: undefined,
+  _repeat: null,
+  _destroyed: false,
+  [Symbol(refed)]: true,
+  [Symbol(kHasPrimitive)]: false,
+  [Symbol(asyncId)]: 333,
+  [Symbol(triggerId)]: 5
+}
+> HELLO!!!!! // 3초뒤 출력
+
+
+
+자동완성 : tab키 사용
+
+Node JS는 전부 내장 모듈이고 이 모듈을 사용하여 운영 체제와 파일과 폴더를 다룸
+
+터미널로 js파일을 만든 후 vscode실행
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice (main)
+$ touch firstScript.js
+
+vscode에서 javascript를 실행하려면 코드를 작성 후 브라우저를 열어서 확인해야함
+for (let i = 0; i < 10; i++) {
+    console.log("Hello From First Script!!")
+}
+
+but node는 브라우저를 실행하지 않아도 작동할 수 있음
+"node 실행파일.확장자" 를 넣으면 바로 실행됨
+
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice (main)
+$ node firstScript.js
+Hello From First Script!!
+Hello From First Script!!
+Hello From First Script!!
+Hello From First Script!!
+Hello From First Script!!
+Hello From First Script!!
+Hello From First Script!!
+Hello From First Script!!
+Hello From First Script!!
+Hello From First Script!!
+
+오류를 작성할 시 오류발생되었다고 출력함
+
+Node.js에 자세한 정보는 https://nodejs.org/dist/latest-v18.x/docs/api/documentation.html 를 통해 볼 수 있음
+
+모듈 사용하기
+
+Process
+Node에 사용하는 객체
+전역 범위에 있음
+현재 실행하는 Node.js를 통제하는 메서드(Node 버전과 같은 정보를 가지고 있음)
+
+
+> process
+process {
+  version: 'v18.12.1',
+  versions: {
+    node: '18.12.1',
+    v8: '10.2.154.15-node.12',
+    uv: '1.43.0',
+    zlib: '1.2.11',
+    brotli: '1.0.9',
+    ares: '1.18.1',
+    modules: '108',
+    nghttp2: '1.47.0',
+    napi: '8',
+    llhttp: '6.0.10',
+    openssl: '3.0.7+quic',
+    cldr: '41.0',
+    icu: '71.1',
+    tz: '2022b',
+    unicode: '14.0',
+    ngtcp2: '0.8.1',
+    nghttp3: '0.7.0'
+  },
+  arch: 'x64',
+  platform: 'win32',
+  release: {
+    name: 'node',
+    lts: 'Hydrogen',
+
+..... 이하 생략(객체가 많음)
+
+내가 사용한 버전 확인
+> process.version
+'v18.12.1'
+
+내 릴리스 정보 확인
+> process.release
+{
+  name: 'node',
+  lts: 'Hydrogen',
+  sourceUrl: 'https://nodejs.org/download/release/v18.12.1/node-v18.12.1.tar.gz'
+,
+  headersUrl: 'https://nodejs.org/download/release/v18.12.1/node-v18.12.1-header
+s.tar.gz',
+  libUrl: 'https://nodejs.org/download/release/v18.12.1/win-x64/node.lib'
+}
+
+현재 작업 디렉토리 확인
+> process.cwd()
+'C:\\Users\\skeh0'
+
+node 경로확인
+> process.argv
+[ 'C:\\Program Files\\nodejs\\node.exe' ]
+
+
+.exit후 터미널로 파일 생성 후 VSCode로 파일열기
+
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice (main)
+$ touch args.js
+
+vscode로 args.js파일에서 작성
+console.log("Hello From Args File!!")
+
+이후 node로 호출
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice (main)
+$ node args.js
+Hello From Args File!!
+
+호출이 잘 되었다면 이번엔 process를 출력
+
+vscode로 args.js파일에서 작성
+console.log("Hello From Args File!!")
+console.log(process.argv)
+
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice (main)
+$ node args.js
+Hello From Args File!!
+[
+  'C:\\Program Files\\nodejs\\node.exe',
+  'C:\\Users\\skeh0\\OneDrive\\바탕 화면\\WebDev\\practice\\practice\\args.js'
+]
+
+배열의 첫번째 값은 node경로, 두번째 값은 args.js경로를 의미
+
+참고) process.argv 원문
+The process.argv property returns an array containing the command-line arguments passed when the Node.js process was launched. 
+The first element will be process.execPath. See process.argv0 if access to the original value of argv[0] is needed. 
+The second element will be the path to the JavaScript file being executed. The remaining elements will be any additional command-line arguments.
+
+process.argv는 인자가 몇개든 받아들임
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice (main)
+$ node args.js cat dog lion
+Hello From Args File!!
+[
+  'C:\\Program Files\\nodejs\\node.exe',
+  'C:\\Users\\skeh0\\OneDrive\\바탕 화면\\WebDev\\practice\\practice\\args.js',
+  'cat',
+  'dog',
+  'lion'
+]
+
+띄어쓰기로 인해 인자를 여러개 입력
+
+이를 이용해서 스크립트를 만들수 있음
+
+greeter.js생성
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice (main)
+$ touch greeter.js
+
+vscode로 greeter.js파일 작성
+const args = process.argv.slice(2); // argv의 처음 요소 두개는 무시(경로임)
+for (let arg of args) {
+    console.log(`Hi there, ${arg}`)
+}
+
+node 실행
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice (main)
+$ node greeter.js pyun kong
+Hi there, pyun
+Hi there, kong
+
+
+
+File System
+파일 생성, 읽기, 추가 등 여러 메서드를 사용
+파일을 읽거나 폴더를 생성하는 메서드나 삭제하는 메서드에는 동기, 비동기 방식으로 두가지가 존재
+
+fs.mkdir 사용
+fs를 사용하려면 require('fs'); 가 필요
+
+touch boilerplate.js 로 파일 생성후 vscode에 작성
+const fs = require('fs'); // fs를 사용하려면 작성
+console.log(fs)
+
+node실행
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice (main)
+$ node boilerplate.js
+{
+  appendFile: [Function: appendFile],
+  appendFileSync: [Function: appendFileSync],
+  access: [Function: access],
+  accessSync: [Function: accessSync],
+  chown: [Function: chown],
+  chownSync: [Function: chownSync],
+  chmod: [Function: chmod],
+  chmodSync: [Function: chmodSync],
+  close: [Function: close],
+  closeSync: [Function: closeSync],
+  copyFile: [Function: copyFile],
+  copyFileSync: [Function: copyFileSync],
+  cp: [Function: cp],
+  cpSync: [Function: cpSync],
+  createReadStream: [Function: createReadStream],
+  createWriteStream: [Function: createWriteStream],
+  exists: [Function: exists],
+  existsSync: [Function: existsSync],
+  fchown: [Function: fchown],
+  fchownSync: [Function: fchownSync],
+  fchmod: [Function: fchmod],
+  fchmodSync: [Function: fchmodSync],
+  fdatasync: [Function: fdatasync],
+  fdatasyncSync: [Function: fdatasyncSync],
+  fstat: [Function: fstat],
+  fstatSync: [Function: fstatSync],
+  fsync: [Function: fsync],
+  fsyncSync: [Function: fsyncSync],
+  ftruncate: [Function: ftruncate],
+  ftruncateSync: [Function: ftruncateSync],
+  futimes: [Function: futimes],
+  futimesSync: [Function: futimesSync],
+  lchown: [Function: lchown],
+  lchownSync: [Function: lchownSync],
+  lchmod: undefined,
+  lchmodSync: undefined,
+  link: [Function: link],
+  linkSync: [Function: linkSync],
+  lstat: [Function: lstat],
+  lstatSync: [Function: lstatSync],
+  lutimes: [Function: lutimes],
+  lutimesSync: [Function: lutimesSync],
+  mkdir: [Function: mkdir],
+  mkdirSync: [Function: mkdirSync],
+  mkdtemp: [Function: mkdtemp],
+  mkdtempSync: [Function: mkdtempSync],
+  open: [Function: open],
+  openSync: [Function: openSync],
+  opendir: [Function: opendir],
+  opendirSync: [Function: opendirSync],
+  readdir: [Function: readdir],
+  readdirSync: [Function: readdirSync],
+  read: [Function: read],
+
+.... 이하 생략
+
+다시 vscode에 작성
+비동기식 mkdir
+const fs = require('fs'); // fs를 사용하려면 작성
+//console.log(fs)
+
+// https://nodejs.org/dist/latest-v18.x/docs/api/fs.html#fsmkdirpath-options-callback 참조
+fs.mkdir('Dogs', { recursive: true }, (err) => {
+    console.log('CallBack!!')
+    if (err) throw err; // 에러가 발생할 경우 출력
+});
+
+console.log("I Come After MKDIR")
+
+
+node 실행
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice (main)
+$ node boilerplate.js
+I Come After MKDIR
+CallBack!!
+
+해당 파일을 읽어 디렉토리가 생성되고 생성된 후 콜백이 실행됨
+
+Dogs/ 디렉토리가 있는지 확인
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice (main)
+$ ls
+ 01_네이버_주식현재가_크롤링/   greeter.js
+ 02_파이썬엑셀다루기/           html+css정리.txt
+ 03_네이버_쇼핑_크롤링/        'javascript extends and super.html'
+ Dogs/                          javascript정리.txt
+'NodeJS 정리.txt'               js연습.html
+ SearchTvShow.html              makeEditor.html
+ SearchTvShow.js                makeTag.html
+ args.js                        objectarray.js
+ boilerplate.js                 pagination.html
+ bootstrap/                     practice.html
+ changeFontSize.html            practice.js
+ checkbox.html                  python/
+ checkbox.js                    todolist2.html
+ firstScript.js                '체크박스 전체 체크.txt'
+
+
+비동기식 mkdir
+vscode작성
+const fs = require('fs'); // fs를 사용하려면 작성
+// 동기식 mkdir
+fs.mkdirSync('Cats');
+console.log("I Come After MKDIR")
+
+node실행
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice (main)
+$ node boilerplate.js
+I Come After MKDIR
+
+Cats/ 디렉토리가 있는지 확인
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice (main)
+$ ls
+ 01_네이버_주식현재가_크롤링/   greeter.js
+ 02_파이썬엑셀다루기/           html+css정리.txt
+ 03_네이버_쇼핑_크롤링/        'javascript extends and super.html'
+ Cats/                          javascript정리.txt
+'NodeJS 정리.txt'               js연습.html
+ SearchTvShow.html              makeEditor.html
+ SearchTvShow.js                makeTag.html
+ args.js                        objectarray.js
+ boilerplate.js                 pagination.html
+ bootstrap/                     practice.html
+ changeFontSize.html            practice.js
+ checkbox.html                  python/
+ checkbox.js                    todolist2.html
+ firstScript.js                '체크박스 전체 체크.txt'
+
+
+현재 상황에서는 비동기식, 동기식 디렉토리 성이 차이가 없지만 코드를 추갛기 전에 디렉토리를 만들어야 하는 경우 동기 메서드를 사용하면 된다.
+단, 동기식 디렉토리 생성은 콜백이 없으므로 try-catch문을 사용해야함
+
+디렉토리 이름 인자로 받아 mkdir
+vscode작성
+const fs = require('fs'); // fs를 사용하려면 작성
+const folderName = process.argv[2] || "Project" // 디폴트로 undefind인 경우 Project가 파일이름임 
+fs.mkdirSync(folderName);
+
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice (main)
+$ node boilerplate.js Chickens
+
+Chickens 디렉토리가 생성되었는지 확인
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice (main)
+$ ls
+ 01_네이버_주식현재가_크롤링/   greeter.js
+ 02_파이썬엑셀다루기/           html+css정리.txt
+ 03_네이버_쇼핑_크롤링/        'javascript extends and super.html'
+ Cats/                          javascript정리.txt
+ Chickens/                      js연습.html
+'NodeJS 정리.txt'               makeEditor.html
+ SearchTvShow.html              makeTag.html
+ SearchTvShow.js                objectarray.js
+ args.js                        pagination.html
+ boilerplate.js                 practice.html
+ bootstrap/                     practice.js
+ changeFontSize.html            python/
+ checkbox.html                  todolist2.html
+ checkbox.js                   '체크박스 전체 체크.txt'
+ firstScript.js
+
+기본 디폴트 값으로 Project 디렉토리가 생성되는지 확인
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice (main)
+$ node boilerplate.js
+
+Project 디렉토리가 생성되었는지 확인
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice (main)
+$ ls
+ 01_네이버_주식현재가_크롤링/   firstScript.js
+ 02_파이썬엑셀다루기/           greeter.js
+ 03_네이버_쇼핑_크롤링/         html+css정리.txt
+ Cats/                         'javascript extends and super.html'
+ Chickens/                      javascript정리.txt
+'NodeJS 정리.txt'               js연습.html
+ Project/                       makeEditor.html
+ SearchTvShow.html              makeTag.html
+ SearchTvShow.js                objectarray.js
+ args.js                        pagination.html
+ boilerplate.js                 practice.html
+ bootstrap/                     practice.js
+ changeFontSize.html            python/
+ checkbox.html                  todolist2.html
+ checkbox.js                   '체크박스 전체 체크.txt'
+
+
+
+writeFile
+파일에 데이터를 기록하거나 기존 파일을 대체
+
+fs.writeFileSync('대상파일', '내용')
+
+vscode 작성
+const fs = require('fs'); // fs를 사용하려면 작성
+const folderName = process.argv[2] || "Project" // 디폴트로 undefind인 경우 Project가 파일이름임 
+
+// 동기식 mkdir
+fs.mkdirSync(folderName);
+fs.writeFileSync(`${folderName}/index.html`, '') // 내용을 넣는 부분도 넣어야함, 빈 공백일 경우 '' 입력
+fs.writeFileSync(`${folderName}/apps.js`, '')
+fs.writeFileSync(`${folderName}/styles.css`, '')
+
+node 실행
+
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice (main)
+$ node boilerplate.js ProPro
+
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice (main)
+$ ls
+ 01_네이버_주식현재가_크롤링/   greeter.js
+ 02_파이썬엑셀다루기/           html+css정리.txt
+ 03_네이버_쇼핑_크롤링/        'javascript extends and super.html'
+'NodeJS 정리.txt'               javascript정리.txt
+ ProPro/                        js연습.html
+ SearchTvShow.html              makeEditor.html
+ SearchTvShow.js                makeTag.html
+ args.js                        objectarray.js
+ boilerplate.js                 pagination.html
+ bootstrap/                     practice.html
+ changeFontSize.html            practice.js
+ checkbox.html                  python/
+ checkbox.js                    todolist2.html
+ firstScript.js                '체크박스 전체 체크.txt'
+
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice (main)
+$ cd ProPro
+
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice/ProPro (main)
+$ ls
+apps.js  index.html  styles.css
+
+
+주의해야 할 점은 스크립트에 있는 위치에 파일이 생성되는 것이 아니라 node를 실행한 위치에서 파일이 생성됨
+
+try - catch문 사용
+
+// 동기식 mkdir
+try {
+    fs.mkdirSync(folderName);
+    fs.writeFileSync(`${folderName}/index.html`, '')
+    fs.writeFileSync(`${folderName}/apps.js`, '')
+    fs.writeFileSync(`${folderName}/styles.css`, '')
+} catch (e) {
+    console.log("something went wrong!!")
+    console.log(e)
+}
+
+
+
+
+module.export사용하기
+다른 파일에 있는 객체를 사용하는 방법임
+
+vscode에서 math.js작성
+const add = (x, y) => x + y
+
+const PI = 3.14159;
+
+const square = x => x * x;
+
+module.exports.add = add;
+module.exports.PI = PI;
+module.exports.square = square;
+
+
+vscode에서 app.js작성
+//fs가 아닌 다른 모듈을 require할때는 ./ 를 붙여야함
+const math = require('./math');
+//math모듈의 객체를 출력함
+// node app.js를 하면 결과값 출력
+console.log(math.PI)
+console.log(math.square(9))
+
+node 실행
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice (main)
+$ node app.js
+3.14159
+81
+
+구조분해할당도 가능
+const { PI, square } = require('./math');
+
+console.log(PI)
+console.log(square(9))
+
+node를 실행하면 같은 값이 나옴
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice (main)
+$ node app.js
+3.14159
+81
+
+
+
+
+
+
+
+
+
+
+
+

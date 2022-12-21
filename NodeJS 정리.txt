@@ -566,8 +566,206 @@ try {
 
 
 
+module.export사용하기
+다른 파일에 있는 객체를 사용하는 방법임
+
+vscode에서 math.js작성
+const add = (x, y) => x + y
+
+const PI = 3.14159;
+
+const square = x => x * x;
+
+module.exports.add = add;
+module.exports.PI = PI;
+module.exports.square = square;
 
 
+vscode에서 app.js작성
+//fs가 아닌 다른 모듈을 require할때는 ./ 를 붙여야함
+const math = require('./math');
+//math모듈의 객체를 출력함
+// node app.js를 하면 결과값 출력
+console.log(math.PI)
+console.log(math.square(9))
+
+node 실행
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice (main)
+$ node app.js
+3.14159
+81
+
+구조분해할당도 가능
+const { PI, square } = require('./math');
+
+console.log(PI)
+console.log(square(9))
+
+node를 실행하면 같은 값이 나옴
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice (main)
+$ node app.js
+3.14159
+81
+
+
+디렉토리로도 모듈을 export할 수 있음
+shelter디렉토리를 만들고 kong.js, pang.js , dong.js 만들기
+
+shelter/kong.js
+module.exports = {
+    name: 'kong',
+    color: 'white',
+}
+
+
+shelter/pang.js
+module.exports = {
+    name: 'pang',
+    color: 'black',
+}
+
+shelter/dong.js
+module.exports = {
+    name: 'dong',
+    color: 'brown',
+}
+
+이후 세 파일을 통합하는 index.js를 생성하여 작성
+shelter.index.js
+const dong = require('./dong');
+const kong = require('./kong');
+const pang = require('./pang');
+
+const allDogs = [dong, kong, pang];
+
+//console.log(allDogs);
+
+module.exports = allDogs;
+
+다른 디렉토리에 있는 app.js에 작성
+const dogs = require('./shelter')
+console.log("Required an entire Directory!", dogs);
+//shelter/index.js파일에 있는 module.exports부분을 출력함
+
+node로 app.js 실행
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice/NodeJSPractice (main)
+$ node app.js
+Required an entire Directory! [
+  { name: 'dong', color: 'brown' },
+  { name: 'kong', color: 'white' },
+  { name: 'pang', color: 'black' }
+]
+
+
+npm
+Node Package Manager
+여러 개발자들이 공개해놓은 무료로 사용할 수 있는 많은 패키지로 된 라이브러리
+명령줄 도구로 도구를 사용해서 패키지들을 손쉽게 설치하고 관리할 수 있음
+
+node를 다운했다면 npm은 자동으로 다운로드
+
+
+패키지 다운로드
+npm install 패키지명
+패키지명은 npm 에서 이름을 확인한 후 등록되어있는 이름으로 설치
+
+give-me-a-joke : 농담을 랜덤으로 만들어줌 
+https://www.npmjs.com/package/give-me-a-joke
+
+터미널에서 npm install
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice/NodeJSPractice/Jokester (main)
+$ npm install give-me-a-joke
+
+이후 해당 경로에 node_modules 디렉토리와 package.json 등의 디렉토리가 생성됨
+
+index.js를 디렉토리에 생성하여 작성
+const jokes = require('give-me-a-joke'); // 패키지 명을 입력
+
+// console.dir(jokes)
+
+// To get a random dad joke
+jokes.getRandomDadJoke(function (joke) {
+    console.log(joke);
+});
+
+node로 실행
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice/NodeJSPractice/Jokester (main)
+$ node index.js
+What do you call your friend who stands in a hole? Phil.
+
+
+
+colors.js
+https://www.npmjs.com/package/colors
+
+npm install ( 만약 npm fund로 설치가 안될시 아래에 --no-fund까지 install)
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice/NodeJSPractice/Jokester (main)
+$ npm install colors
+
+up to date, audited 52 packages in 591ms
+
+3 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice/NodeJSPractice/Jokester (main)
+$ npm install --no-fund
+
+up to date, audited 52 packages in 5s
+
+found 0 vulnerabilities
+
+
+node 실행
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice/NodeJSPractice/Jokester (main)
+$ node index.js
+Did you hear the one about the giant pickle?  He was kind of a big dill. // 터미널에서는 무지개색으로 보임
+
+
+npm 전역 node_modules에 설치
+글로벌이 아닌 모듈을 npm install 했을 경우 다른 디렉토리에서 require()를 하여 불러올 경우 불러오지 못하는 에러가 발생
+따라서 여러 디렉토리에서 불러오려면 전역으로 install 해야한다.
+하지만 express나 react 등과 같은 곳에서 전역으로 쓰게 되면 버전마다 차이가 나기 때문에 전역으로 설치하지 않는 것이 좋다.
+
+cowsay 설치하기
+https://www.npmjs.com/package/cowsay
+
+npm install -g cowsay 로 설치
+-g 는 global(전역)을 의미
+
+만약 최상위 node_modules디렉토리에 추가하고 싶은경우
+sudo chown -R $USER/usr/local/lib/node_modules
+입력
+
+터미널에 cowsay helooo 입력
+skeh0@pyun MINGW64 ~
+$ cowsay helooo
+ ________
+< helooo >
+ --------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+취한모드(-s : stoned)
+skeh0@pyun MINGW64 ~
+$ cowsay hellooooo -s
+ ___________
+< hellooooo >
+ -----------
+        \   ^__^
+         \  (**)\_______
+            (__)\       )\/\
+             U  ||----w |
+                ||     ||
+
+자세한건 --help로 확인
+
+단, 최상위 디렉토리가 아니라 특정 디렉토리에서 cowsay를 require() 할 경우 에러가 발생함
+이때 npm link cowsay를 터미널에서 실행 후 다시 node를 실행하면 정상적으로 작동
 
 
 
