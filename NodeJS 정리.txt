@@ -9,6 +9,7 @@ but Node는 브라우저 밖에서 작동되는 javascript 실행환경으로 �
 그러나 Node.js는 dom객체나 이벤트 등을 사용할 수 없다.
 
 
+
 Node.js 용도
 풀 스택 애플리케이션을 만들기 위한 장치
 프레임워크로는 Express가 있음
@@ -770,13 +771,232 @@ $ cowsay hellooooo -s
 
 
 
+package.json 
+npm으로 install 한 패키지를 보면 package.json 파일이 자동으로 생성되어 있음
+이 파일은 기본적으로 이 특정 프로젝트나 패키지, 앱에 대한 데이터 즉 정보를 지니고 있음
+
+Artster라는 디렉토리를 생성
+mkdir Artster
+cd Artster
+
+npm init을 하면 pakcage.json이 만들어짐
+
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice/NodeJSPractice/artster (main)
+$ npm init
+This utility will walk you through creating a package.json file.
+It only covers the most common items, and tries to guess sensible defaults.
+
+See `npm help init` for definitive documentation on these fields
+and exactly what they do.
+
+Use `npm install <pkg>` afterwards to install a package and
+save it as a dependency in the package.json file.
+
+Press ^C at any time to quit.
+package name: (artster)
+version: (1.0.0)
+description:
+entry point: (index.js)
+test command:
+git repository:
+keywords:
+author: Pyun
+license: (ISC)
+About to write to C:\Users\skeh0\OneDrive\바탕 화면\WebDev\practice\practice\NodeJSPractice\artster\package.json:
+
+{
+  "name": "artster",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Pyun",
+  "license": "ISC"
+}
+
+
+Is this OK? (yes)
+
+
+이후 해당 디렉토리에 가면 package.json 파일이 생성되어 있음
+
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice/NodeJSPractice/artster (main)
+$ ls
+package.json
+
+figlet 설치
+https://www.npmjs.com/package/figlet 참고
+
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice/NodeJSPractice/artster (main)
+$ npm i figlet
+
+added 1 package, and audited 2 packages in 1s
+
+found 0 vulnerabilities
+
+artster/package.json을 보면 figlet 버전과 입력되어 있음
+{
+  "name": "artster",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Pyun",
+  "license": "ISC",
+  "dependencies": {
+    "figlet": "^1.5.2"
+  }
+}
+
+해당 디렉토리안에 index.js파일을 만들고 작성
+const figlet = require('figlet')
+
+figlet('Hello World!!', function (err, data) {
+    if (err) {
+        console.log('Something went wrong...');
+        console.dir(err);
+        return;
+    }
+    console.log(data)
+});
+
+node 실행
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice/NodeJSPractice/artster (main)
+$ node index.js
+  _   _      _ _        __        __         _     _ _ _
+ | | | | ___| | | ___   \ \      / /__  _ __| | __| | | |
+ | |_| |/ _ \ | |/ _ \   \ \ /\ / / _ \| '__| |/ _` | | |
+ |  _  |  __/ | | (_) |   \ V  V / (_) | |  | | (_| |_|_|
+ |_| |_|\___|_|_|\___/     \_/\_/ \___/|_|  |_|\__,_(_|_)
+
+// Hello World!! 그림임...
+
+colors랑 결합
+npm i colors를 한 다음 package.json에 dependency확인
+
+index.js에 colors를 불러와서 입력
+const figlet = require('figlet');
+const colors = require('colors');
+
+figlet('Hello World!!', function (err, data) {
+    if (err) {
+        console.log('Something went wrong...');
+        console.dir(err);
+        return;
+    }
+    console.log(data.green)
+});
+
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice/NodeJSPractice/artster (main)
+$ node index.js
+  _   _      _ _        __        __         _     _ _ _
+ | | | | ___| | | ___   \ \      / /__  _ __| | __| | | |
+ | |_| |/ _ \ | |/ _ \   \ \ /\ / / _ \| '__| |/ _` | | |
+ |  _  |  __/ | | (_) |   \ V  V / (_) | |  | | (_| |_|_|
+ |_| |_|\___|_|_|\___/     \_/\_/ \___/|_|  |_|\__,_(_|_)
 
 
 
+이렇게 dependency를 작성하면 github에 프로젝트를 push 할 경우 node_modules는 push되지 않음
+이 때 터미널에서 npm install 혹은 npm i 를 하면 npm이 package.json에 dependency를 찾아서 알아서 install해줌
+
+따라서 프로젝트의 루트 디렉토리 안 package.json이 있는 곳에 코드를 내려받고 npm install을 함
 
 
+언어맞추기 프로젝트
+
+franc 패키지
+https://github.com/wooorm/franc
+
+langs 패키지
+https://github.com/adlawson/nodejs-langs
 
 
+빈 디렉토리를 생성하여 package.json을 만든 후 franc와 langs 설치
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice/NodeJSPractice/artster (main)
+$ cd ..
+
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice/NodeJSPractice (main)
+$ mkdir LangGuessr
+
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice/NodeJSPractice (main)
+$ cd langGuessr
+
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice/NodeJSPractice/langGuessr (main)
+$ ls
+
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice/NodeJSPractice/langGuessr (main)
+$ npm init
+This utility will walk you through creating a package.json file.
+It only covers the most common items, and tries to guess sensible defaults.
+
+See `npm help init` for definitive documentation on these fields
+and exactly what they do.
+
+Use `npm install <pkg>` afterwards to install a package and
+save it as a dependency in the package.json file.
+
+Press ^C at any time to quit.
+package name: (langguessr)
+version: (1.0.0)
+description:
+entry point: (index.js)
+test command:
+git repository:
+keywords:
+author:
+license: (ISC)
+About to write to C:\Users\skeh0\OneDrive\바탕 화면\WebDev\practice\practice\NodeJSPractice\langGuessr\package.json:
+
+{
+  "name": "langguessr",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
+
+
+Is this OK? (yes)
+
+skeh0@pyun MINGW64 ~/OneDrive/바탕 화면/WebDev/practice/practice/NodeJSPractice/langGuessr (main)
+$ npm i franc langs
+
+added 5 packages, and audited 6 packages in 4s
+
+4 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+npm i colors
+
+
+vscode 작성
+const franc = require('franc');
+const langs = require('langs');
+const colors = require('colors');
+const input = process.argv[2];
+const langCode = franc(input);
+
+if (langCode === 'und') {
+    console.log("SORRY, couldn't figure it out ! try with more")
+} else {
+    const language = langs.where("3", langCode);
+    console.log(`Our best guess is: ${language.name}`.green);
+}
+
+
+// 현재 에러 -> require대신 import로 바꾸고 package.json에 type="modules"를 추가
+근데 왜 langs는 또 import가 아닌가...
 
 
 
